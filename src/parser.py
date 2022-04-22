@@ -88,28 +88,47 @@ def get_ms(time_str):
 
 def parse_wrk_output(wrk_output):
     retval = {}
+
+    # Parse each line of output
     for line in wrk_output.splitlines():
+
+        # Example:
+        # Latency     4.08ms    1.15ms   5.86ms   98.01%
         x = re.search("^\s+Latency\s+(\d+\.\d+\w*)\s+(\d+\.\d+\w*)\s+(\d+\.\d+\w*).*$", line)
         if x is not None:
             retval['lat_avg'] = get_ms(x.group(1))
             retval['lat_stdev'] = get_ms(x.group(2))
             retval['lat_max'] = get_ms(x.group(3))
+
+        # Example: 
+        # Req/Sec    52.64     72.91   222.00     89.68%
         x = re.search("^\s+Req/Sec\s+(\d+\.\d+\w*)\s+(\d+\.\d+\w*)\s+(\d+\.\d+\w*).*$", line)
         if x is not None:
             retval['req_avg'] = get_number(x.group(1))
             retval['req_stdev'] = get_number(x.group(2))
             retval['req_max'] = get_number(x.group(3))
+
+        # Example:
+        # 788 requests in 15.03s, 165.45KB read
         x = re.search("^\s+(\d+)\ requests in (\d+\.\d+\w*)\,\ (\d+\.\d+\w*)\ read.*$", line)
         if x is not None:
             retval['tot_requests'] = get_number(x.group(1))
             retval['tot_duration'] = get_ms(x.group(2))
             retval['read'] = get_bytes(x.group(3))
+
+        # Example:
+        # Requests/sec:     52.43
         x = re.search("^Requests\/sec\:\s+(\d+\.*\d*).*$", line)
         if x is not None:
             retval['req_sec_tot'] = get_number(x.group(1))
+
+        # Example:
+        # Transfer/sec:     11.01KB
         x = re.search("^Transfer\/sec\:\s+(\d+\.*\d*\w+).*$", line)
         if x is not None:
             retval['read_tot'] = get_bytes(x.group(1))
+
+        # Errors
         x = re.search(
             "^\s+Socket errors:\ connect (\d+\w*)\,\ read (\d+\w*)\,\ write\ (\d+\w*)\,\ timeout\ (\d+\w*).*$", line)
         if x is not None:
@@ -117,6 +136,7 @@ def parse_wrk_output(wrk_output):
             retval['err_read'] = get_number(x.group(2))
             retval['err_write'] = get_number(x.group(3))
             retval['err_timeout'] = get_number(x.group(4))
+
     if 'err_connect' not in retval:
         retval['err_connect'] = 0
     if 'err_read' not in retval:
@@ -126,4 +146,3 @@ def parse_wrk_output(wrk_output):
     if 'err_timeout' not in retval:
         retval['err_timeout'] = 0
     return retval
-
