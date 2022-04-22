@@ -1,3 +1,4 @@
+import os
 import json
 from time import sleep
 import config
@@ -5,13 +6,13 @@ from wrk import generate_workload
 from parser import parse_wrk_output
 from plots import plot_latency_distribution, plot_latency_per_request
 
+
 def main():
     # Create workload
     wrk_process = generate_workload()
 
     # Wait for process to complete
     while wrk_process.poll() is None:
-        print("wrk running...")
         sleep(2)
 
     # Print output
@@ -26,7 +27,12 @@ def main():
     wrk_output_dict = parse_wrk_output(stdout)
     print(json.dumps(wrk_output_dict, indent=4, sort_keys=True))
 
-    # Plot latency per request
+    # Clear results folder
+    dir = os.path.join(config.ROOT, 'results')
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
+
+    # Plot latency information
     plot_latency_per_request()
     plot_latency_distribution()
 
