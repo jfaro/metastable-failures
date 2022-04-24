@@ -1,19 +1,54 @@
 import os
 import json
-from time import sleep
+from time import sleep, time
 import config
 from wrk import generate_workload
 from parser import parse_wrk_output
 from plots import plot_latency_distribution, plot_latency_per_request
+from docker import get_container_stats, update_network_connection
+from cmd import get_process_output
 
 
 def main():
     # Create workload
     wrk_process = generate_workload()
+    start_time = time()
+    network_disabled = False
+    network_reenabled = False
 
     # Wait for process to complete
     while wrk_process.poll() is None:
-        sleep(2)
+        current_time = time()
+        elapsed_time = current_time - start_time
+
+        print("Current:", current_time, "| Start :",
+              start_time, "| Elapsed", elapsed_time)
+        # print(get_container_stats(config.CONTAINER_TO_MONITOR))
+
+        # Disable network
+        if elapsed_time > config.DISCONNECT_NET_AFTER_SEC and not network_disabled:
+            print("Disconnect network", current_time)
+            update_network_connection(config.CONTAINER_TO_DISCONNECT,
+                                      config.DOCKER_NETWORK,
+                                      enable_connection=False)
+            print("DISCONNECT COMMAND DONE")
+            sleep(2)
+            output = get_process_output(
+                ['docker', 'inspect', config.CONTAINER_TO_DISCONNECT, '-f', '{{json .NetworkSettings.Networks }}'])
+            print("DOCKER INSPECT OUTPUT:", output)
+            network_disabled = True
+
+        # Enable network
+        time_to_reconnect = config.DISCONNECT_NET_AFTER_SEC + config.NETWORK_OUTAGE_DURATION
+        if elapsed_time > time_to_reconnect and not network_reenabled:
+            print("Reconnect network", current_time)
+            update_network_connection(config.CONTAINER_TO_DISCONNECT,
+                                      config.DOCKER_NETWORK,
+                                      enable_connection=True)
+            network_reenabled = True
+
+        # Go to bed
+        sleep(.5)
 
     # Print output
     stdout, stderr = wrk_process.communicate()
