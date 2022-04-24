@@ -13,7 +13,14 @@ WRK_DIR = 'wrk2'
 # Workload configuration
 NUM_THREADS = 1
 NUM_CONNECTIONS = 10
-DURATION = 20
+DURATION = 30
 REQUESTS_PER_SECOND = 100
 SCRIPT_TO_RUN = './scripts/social-network/compose-post.lua'
 URL = 'http://localhost:8090/wrk2-api/post/compose'
+
+# Docker
+CONTAINER_TO_MONITOR = 'jfaro_compose-post-service_1'
+CONTAINER_TO_DISCONNECT = 'jfaro_post-storage-mongodb_1'
+DOCKER_NETWORK = 'jfaro_default'
+DISCONNECT_NET_AFTER_SEC = 10
+NETWORK_OUTAGE_DURATION = 15
