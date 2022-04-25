@@ -1,5 +1,6 @@
 import os
 import glob
+from re import X
 import matplotlib.pyplot as plt
 import numpy as np
 from config import PATH_TO_SOCIAL_NETWORK, WRK_DIR, RESULTS
@@ -65,3 +66,26 @@ def plot_latency_distribution():
             # Save
             plt.savefig(os.path.join(RESULTS, f'latency-hist-t{i}.png'))
             print(f"Saved 'latency-hist-t{i}.png'")
+
+
+def plot_memory_usage(stats):
+    if len(stats) == 0:
+        return
+
+    x = []
+    y = []
+    memory_capacity = stats[0]['mem_capacity']
+
+    for stat in stats:
+        x.append(stat['timestamp'])
+        y.append(stat['mem_usage'])
+
+    # Create plot
+    fig, ax = plt.subplots()
+    ax.plot(x, y, linewidth=2.0)
+    ax.set_xlabel('Time (sec)')
+    ax.set_ylabel('Memory usage (MiB)')
+
+    # Save
+    plt.savefig(os.path.join(RESULTS, f'memory-usage.png'))
+    print(f"Saved 'memory-usage.png'")
