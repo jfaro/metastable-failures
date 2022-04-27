@@ -13,7 +13,7 @@ WRK_DIR = 'wrk2'
 # Workload configuration
 NUM_THREADS = 1
 NUM_CONNECTIONS = 10
-DURATION = 40
+DURATION = 120
 REQUESTS_PER_SECOND = 100
 SCRIPT_TO_RUN = './scripts/social-network/compose-post.lua'
 URL = 'http://localhost:8090/wrk2-api/post/compose'
