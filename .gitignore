@@ -14,3 +14,4 @@ venv.bak/
 
 # Figures
 results/
+results-cache/
