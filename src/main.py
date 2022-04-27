@@ -37,13 +37,13 @@ def main():
     print("Workload output dict:")
     print(json.dumps(output_dict, indent=4, sort_keys=True))
 
-    # Clear results folder
-    dir = os.path.join(config.ROOT, 'results')
-    for f in os.listdir(dir):
-        os.remove(os.path.join(dir, f))
+    # Create results folder
+    if not os.path.isdir(config.RESULTS):
+        os.mkdir(config.RESULTS)
 
-    # Print stats
-    # print(json.dumps(stats, indent=4, sort_keys=True))
+    # Clear old results
+    for f in os.listdir(config.RESULTS):
+        os.remove(os.path.join(config.RESULTS, f))
 
     # Plot latency information
     plot_latency_per_request()
