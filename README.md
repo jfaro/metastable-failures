@@ -46,8 +46,6 @@ make compose-down       # docker-compose -p jfaro down
 make logs               # docker logs jfaro_compose-post-service_`
 ```
 
-
-
 ###
 
 
