@@ -25,13 +25,13 @@ Rebuild the `wrk` workload generation executable.
 cd ./wrk2; make
 ```
 
-Use the included makefile (`DeathStarBench/socialNetwork/Makefile`) for convenience when executing the following commands.
+Use the included makefile (`DeathStarBench/socialNetwork/Makefile`) for convenience when executing the following commands. *Note:*, `jfaro` can be replaced with whatever tag you choose. Just ensure you use the same tag in the `metastable-failures/src/config.py`.
 
 ```bash
 make rebuild            # docker build -t jfaro:test .
 make compose-up         # docker-compose -p jfaro up -d
 make compose-down       # docker-compose -p jfaro down
-make logs               # docker logs jfaro_compose-post-service_`
+make logs               # docker logs jfaro_compose-post-service_1`
 ```
 
 ## Setting up the workload generator
