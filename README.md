@@ -83,6 +83,24 @@ NETWORK_OUTAGE_START = 10           # Start outage after _ seconds
 NETWORK_OUTAGE_DURATION = 20        # Outage duration
 ```
 
+Start DeathStarBench social network.
+
+```bash
+pwd                     # src/DeathStarBench/socialNetwork
+make rebuild
+make compose-up
+```
+
+Run workload.
+```bash
+pwd                     # src/metastable-failures
+
+# python src/main.py
+make run
+```
+
+Results are printed to stdout and figures are saved in `metastable-failures/results`.
+
 
 ## Project structure
 
