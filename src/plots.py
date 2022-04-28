@@ -32,6 +32,7 @@ def plot_latency_per_request():
             ax.plot(x, y, linewidth=2.0)
             ax.set_xlabel('Request')
             ax.set_ylabel('Latency (μs)')
+            ax.set_yscale('log')
 
             # Save
             plt.savefig(os.path.join(RESULTS, f'latencies-t{i}.png'))
@@ -62,6 +63,7 @@ def plot_latency_distribution():
             ax.hist(latencies, bins=num_bins)
             ax.set_xlabel('Latency (μs)')
             ax.set_ylabel('Frequency')
+            ax.set_yscale('log')
 
             # Save
             plt.savefig(os.path.join(RESULTS, f'latency-hist-t{i}.png'))
