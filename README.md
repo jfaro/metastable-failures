@@ -101,6 +101,14 @@ make run
 
 Results are printed to stdout and figures are saved in `metastable-failures/results`.
 
+<img src="/results-cache/latencies-t0.png" style="width: 320px;" alt="latency per request" />
+
+A set of figures is created for each thread running the workload, or `config.NUM_THREADS` total sets. Each set contains the following:
+- Latency per request plot (`results/latencies-t<THREAD_NUM>.png`)
+- Latency distribution (`results/latency-hist-t<THREAD_NUM>.png`)
+
+Additionally, a plot is generated displaying the `config.CONTAINER_TO_MONITOR` container's memory usage over the duration of the workload
+- Memory usage over time (`results/memory-usage.png`)
 
 ## Project structure
 
